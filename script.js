@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Prevent form submission for login and register forms
     document.getElementById("loginForm").addEventListener("submit", function(event) {
         event.preventDefault();
     });
@@ -7,6 +8,24 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
     });
 
+    // Toggle dropdown menu
+    var dropdownToggle = document.querySelector('.dropdown-toggle');
+    var dropdownMenu = document.querySelector('.dropdown-menu');
+
+    dropdownToggle.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        }
+    });
+
+    // Toggle active class for background images
     var images = document.querySelectorAll('.background-image');
     var index = 0;
 
@@ -18,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     images[index].classList.add('active');
-
     setTimeout(nextImage, 5000);
 });
 

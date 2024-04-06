@@ -25,13 +25,21 @@ session_start();
             <li><a href="search.php">Search</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contract</a></li>
-            <?php if(isset($_SESSION['username'])): ?>
-                <li><a href="logout.php" class="large-button">Logout (<?php echo $_SESSION['username']; ?>)</a></li>
+            <?php if(isset($_SESSION['username']) || isset($_SESSION['doctor_email'])): ?>
+              
+                <?php if(isset($_SESSION['username'])): ?>
+                    <li><a href="logout.php" class="large-button">Logout (<?php echo $_SESSION['username']; ?>)</a></li>
+                <?php endif; ?>
+                <?php if(isset($_SESSION['doctor_email'])): ?>
+                    <li><a href="doctor_logout.php" class="large-button">Doctor Logout (<?php echo $_SESSION['doctor_email']; ?>)</a></li>
+                <?php endif; ?>
             <?php else: ?>
+              
+                <li><a href="patient_login.php" class="large-button">Patient Login</a></li>
+                <li><a href="doctor_login.php" class="large-button">Doctor Login</a></li>
                 <li><a href="register.php" class="large-button">Register</a></li>
-                <li><a href="login.php" class="large-button">Log In</a></li>
             <?php endif; ?>
         </ul>
     </nav>  
 </body>  
-</html>      
+</html>

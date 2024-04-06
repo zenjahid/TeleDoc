@@ -2,55 +2,50 @@
 session_start();
 require_once('./connection.php');
 
-
 class Doctor
 {
-   protected $db;
+    protected $db;
 
-   public function __construct($db)
-   {
-       $this->db = $db;
-   }
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
 
-   public function getAllDoctors()
-   {
-       $stmt = $this->db->prepare("SELECT * FROM doctor");
-       $stmt->execute();
-       return $stmt->fetchAll(PDO::FETCH_ASSOC);
-   }
+    public function getAllDoctors()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM doctor");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public function searchDoctorsByArea($area)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM doctor WHERE Division = :area");
+        $stmt->bindValue(':area', $area);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-   public function searchDoctorsByArea($area)
-   {
-
-       $stmt = $this->db->prepare("SELECT * FROM doctor WHERE Division = :area");
-       $stmt->bindValue(':area', $area);
-       $stmt->execute();
-       return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-   }
-
-   public function searchDoctorsBySpeciality($speciality)
-   {
-       $specialityx = trim($speciality); // No need for mysql_real_escape_string with PDO
-       $stmt = $this->db->prepare("SELECT * FROM doctor WHERE Speciality LIKE :speciality");
-       $stmt->bindValue(':speciality', "%$specialityx%", PDO::PARAM_STR); // Binding the parameter correctly
-       $stmt->execute();
-       return $stmt->fetchAll(PDO::FETCH_ASSOC);
-   }
+    public function searchDoctorsBySpeciality($speciality)
+    {
+        $specialityx = trim($speciality); // STILL DOESN'T WORK...NEED A SOLID TUTORIAL!!!!!
+        $stmt = $this->db->prepare("SELECT * FROM doctor WHERE Speciality LIKE :speciality");
+        $stmt->bindValue(':speciality', "%$specialityx%", PDO::PARAM_STR); 
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 $doctor = new Doctor(Teledoc::connect());
 
 if (isset($_GET['area'])) {
-   $doctors = $doctor->searchDoctorsByArea($_GET['area']);
+    $doctors = $doctor->searchDoctorsByArea($_GET['area']);
 } elseif (isset($_GET['speciality'])) {
-   $doctors = $doctor->searchDoctorsBySpeciality($_GET['speciality']);
+    $doctors = $doctor->searchDoctorsBySpeciality($_GET['speciality']);
 } else {
-   $doctors = $doctor->getAllDoctors();
+    $doctors = $doctor->getAllDoctors();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,14 +68,16 @@ if (isset($_GET['area'])) {
             <li><a href="search.php">Search</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contract</a></li>
-            <?php if(isset($_SESSION['username'])): ?>
-                <li><a href="logout.php" class="large-button">Logout (<?php echo $_SESSION['username']; ?>)</a></li>
+            <?php if(isset($_SESSION['username']) || isset($_SESSION['doctor_email'])): ?>
+                <li><?php echo isset($_SESSION['username']) ? '<a href="logout.php" class="large-button">Logout (' . $_SESSION['username'] . ')</a>' : '<a href="doctor_logout.php" class="large-button">Doctor Logout (' . $_SESSION['doctor_email'] . ')</a>'; ?></li>
             <?php else: ?>
+                <li><a href="patient_login.php" class="large-button">Patient Login</a></li>
+                <li><a href="doctor_login.php" class="large-button">Doctor Login</a></li>
                 <li><a href="register.php" class="large-button">Register</a></li>
-                <li><a href="login.php" class="large-button">Log In</a></li>
             <?php endif; ?>
         </ul>
     </nav>
+    
     
     <div class="container">
         <h2>Search Doctors</h2>
@@ -107,11 +104,13 @@ if (isset($_GET['area'])) {
                     <th>Chamber Location</th>
                     <th>Visit Charge</th>
                     <th>Time Schedule</th>
-                    <th>Book an appointment</th>
+                    <?php if(!isset($_SESSION['doctor_email'])): ?>
+                        <th>Book an appointment</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($doctors as $index => $doctor) : ?>
+                <?php foreach ($doctors as $doctor) : ?>
                     <tr>
                         <td><?php echo $doctor['Name']; ?></td>
                         <td><?php echo $doctor['Email']; ?></td>
@@ -123,7 +122,9 @@ if (isset($_GET['area'])) {
                         <td><?php echo $doctor['ChamberLocation']; ?></td>
                         <td><?php echo $doctor['VisitCharge']; ?></td>
                         <td><?php echo $doctor['TimeStart'] . ' - ' . $doctor['TimeEnd']; ?></td>
-                        <td><a href="appointment.php?IndexNumber=<?php echo $doctor['IndexNumber']; ?>">Book</a></td>
+                        <?php if(!isset($_SESSION['doctor_email'])): ?>
+                            <td><a href="appointment.php?IndexNumber=<?php echo $doctor['IndexNumber']; ?>">Book</a></td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

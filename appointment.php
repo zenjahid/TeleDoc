@@ -1,7 +1,6 @@
 <?php
 require_once('./connection.php');
 
-
 $doctorId = $_GET['IndexNumber'];
 
 try {
@@ -31,6 +30,7 @@ try {
 </head>
 
 <body>
+    <!-- Your HTML content -->
     <div id="background-slideshow">
         <img src="1.jpg" class="background-image active" alt="Background Image">
         <img src="2.jpg" class="background-image" alt="Background Image">
@@ -52,11 +52,11 @@ try {
         </ul>
     </nav> 
     <div class="container">
-    <h1>Dr. <?php echo $doctor['Name']; ?></h1>
+        <h1>Dr. <?php echo $doctor['Name']; ?></h1>
         <div class="wrapper">
             <div class="card">
                 <div class="profile-img">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/024/959/162/small_2x/hand-drawn-vintage-doctor-logo-in-flat-style-png.png" alt="Doctor">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/024/959/162/small_2x/hand-drawn-vintage-doctor-logo-in-flat-style-png.png" alt="Doctor">
                 </div>
                 <div class="content">
                     <ul type="None">   
@@ -74,11 +74,10 @@ try {
             </div>
         </div>
     </div>
-<!--Beloow is Appointment Form-->
+    
     <h2>Available Appointment Times</h2>
 
     <?php
-
     try {
         $query = "SELECT * FROM doctor_availability WHERE doctor_id = :doctorId";
         $stmt = $conn->prepare($query);
@@ -92,7 +91,6 @@ try {
     } catch(PDOException $e) {
         echo 'Error: ' . $e->getMessage();
     }
-
     ?>
 
     <form action="appointment.php" method="post">
@@ -103,9 +101,16 @@ try {
         <select name="appointmentTime">
             <?php
             try {
+                $query = "SELECT TimeStart, TimeEnd FROM doctor WHERE IndexNumber = :doctorId";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':doctorId', $doctorId);
                 $stmt->execute();
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<option>' . $row['appointment_time'] . '</option>';
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $startTime = strtotime($row['TimeStart']);
+                $endTime = strtotime($row['TimeEnd']);
+                while ($startTime < $endTime) {
+                    echo '<option>' . date('H:i', $startTime) . '</option>';
+                    $startTime += 600; 
                 }
             } catch(PDOException $e) {
                 echo 'Error: ' . $e->getMessage();
