@@ -2,7 +2,7 @@
 require_once('./connection.php');
 
 
-$doctorId = $_GET['IndexNumber'];
+$doctorId = $_POST['doctorId'];
 
 try {
     $conn = Teledoc::connect();
@@ -31,11 +31,10 @@ try {
 </head>
 
 <body>
-    <div id="background-slideshow">
-        <img src="1.jpg" class="background-image active" alt="Background Image">
-        <img src="2.jpg" class="background-image" alt="Background Image">
-        <img src="3.jpg" class="background-image" alt="Background Image">
-    </div>
+
+<?php 
+require("background.php");
+?>
     <h1>TeleDoc</h1>
     <nav>
         <ul>
