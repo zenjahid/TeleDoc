@@ -21,15 +21,13 @@ if(isset($_POST['login'])){
             echo '<script>alert("You have been logged in!"); window.location.href = "index.php";</script>';
             exit;
         } else {  
-            echo '<script>alert("Password mismatch!");</script>';
+            $error_message = "Password mismatch!";
         }
     } else {
-        echo '<script>alert("User not found!");</script>';
+        $error_message = "User not found!";
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,16 +54,21 @@ require("background.php");
     </nav>
     <div class="container">
         <h2>Login</h2>
+        <?php if(isset($error_message)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
         <form method="post">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input required type="text" id="username" name="username">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input required type="text" class="form-control" id="username" name="username">
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input required type="password" id="password" name="password">
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input required type="password" class="form-control" id="password" name="password">
             </div>
-            <button type="submit" class="large-button" value="login_button" name="login">Login</button>
+            <button type="submit" class="btn btn-primary" value="login_button" name="login">Login</button>
         </form>
         <p>Don't have an account? <a href="register.php">Register Here!</a></p>
     </div>
