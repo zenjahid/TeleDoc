@@ -1,6 +1,7 @@
 <?php
 require_once('./connection.php');
 
+session_start();
 
 $doctorId = $_POST['doctorId'];
 
