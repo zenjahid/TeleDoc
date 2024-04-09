@@ -7,61 +7,46 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeleDoc</title>
+    <title>TeleDoc - Your Health, Our Priority</title>
     <link rel="stylesheet" href="design.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Custom CSS for hover effect */
         .navbar-nav li a:hover {
             color: #fff !important;
-            background-color: #007bff !important;
+            background-color: #0d6efd !important;
+        }
+        /* Additional styling for index.php */
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 80px 20px;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+        .jumbotron h1 {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .jumbotron p {
+            color: #495057;
         }
     </style>
 </head>
 <body>
-    <?php 
-    require("background.php");
-    ?>
+    <!-- Include the navbar -->
+    <?php include 'navbar.php'; ?>
+
+    <!-- Main content -->
     <div class="container">
-        <!-- <h1>TeleDoc</h1> -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="search.php">Search</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contract</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                        <?php if(isset($_SESSION['username'])): ?>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-outline-danger" href="logout.php">Logout (<?php echo $_SESSION['username']; ?>)</a>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary" href="register.php">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-success" href="login.php">Log In</a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-        </nav>  
+        <div class="jumbotron text-center">
+            <h1>Welcome to TeleDoc</h1>
+            <p>Your Health, Our Priority</p>
+            <p>Get access to healthcare services from the comfort of your home.</p>
+            <a class="btn btn-primary" href="register.php">Register Now</a>
+        </div>
     </div>
+
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
