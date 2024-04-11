@@ -8,29 +8,10 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeleDoc - Your Health, Our Priority</title>
-    <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="css/design.css">
+    <link rel="stylesheet" href="css/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom CSS for hover effect */
-        .navbar-nav li a:hover {
-            color: #fff !important;
-            background-color: #0d6efd !important;
-        }
-        /* Additional styling for index.php */
-        .jumbotron {
-            background-color: #f8f9fa;
-            padding: 80px 20px;
-            margin-top: 30px;
-            border-radius: 15px;
-        }
-        .jumbotron h1 {
-            font-weight: bold;
-            color: #0d6efd;
-        }
-        .jumbotron p {
-            color: #495057;
-        }
-    </style>
+<style></style>
 </head>
 <body>
     <!-- Include the navbar -->

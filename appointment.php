@@ -28,7 +28,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="design.css">
-    <title>Book Appointment with Dr. <?php echo $doctor['Name']; ?></title>
+    <title>Book Appointment with <?php echo $doctor['Name']; ?></title>
 </head>
 
 <body>
@@ -52,7 +52,7 @@ require("background.php");
         </ul>
     </nav> 
     <div class="container">
-    <h1>Dr. <?php echo $doctor['Name']; ?></h1>
+    <h1> <?php echo $doctor['Name']; ?></h1>
         <div class="wrapper">
             <div class="card">
                 <div class="profile-img">
@@ -74,20 +74,24 @@ require("background.php");
             </div>
         </div>
     </div>
-<!--Beloow is Appointment Form-->
+<!--Below is Appointment Form-->
     <h2>Available Appointment Times</h2>
 
     <?php
+    //  echo $_SESSION['user_id'];
+try {
+    $conn = Teledoc::connect();
 
-    try {
-        $query = "SELECT * FROM doctor_availability WHERE doctor_id = :doctorId";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':doctorId', $doctorId);
-        $stmt->execute();
+    // Get the doctor's start and end time
+    $startEndTimeQuery = "SELECT TimeStart, TimeEnd FROM doctor WHERE IndexNumber = :doctorId";
+    $startEndTimeStmt = $conn->prepare($startEndTimeQuery);
+    $startEndTimeStmt->bindParam(':doctorId', $doctorId);
+    $startEndTimeStmt->execute();
+    $doctorTimes = $startEndTimeStmt->fetch(PDO::FETCH_ASSOC);
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo '<p>' . $row['appointment_time'] . '</p>';
-        }
+    $startTime = $doctorTimes['TimeStart'];
+    $endTime = $doctorTimes['TimeEnd'];
+
 
     } catch(PDOException $e) {
         echo 'Error: ' . $e->getMessage();
@@ -95,23 +99,49 @@ require("background.php");
 
     ?>
 
-    <form action="appointment.php" method="post">
+    <form action="book_appointment.php" method="post">
         <input type="hidden" name="doctorId" value="<?php echo $doctorId; ?>">
         <label>Appointment Date:</label>
-        <input type="date" name="appointmentDate">
-        <label>Appointment Time:</label>
-        <select name="appointmentTime">
-            <?php
-            try {
-                $stmt->execute();
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<option>' . $row['appointment_time'] . '</option>';
-                }
-            } catch(PDOException $e) {
-                echo 'Error: ' . $e->getMessage();
+        
+        <input type="date"  name="appointmentDate" value="<?php echo date("Y-m-d") ?>" required>
+        
+<!-- v2 -->
+<label>Appointment Time:</label>
+<select name="appointmentTime" required>
+    <?php
+    try {
+        // Prepare query to select appointment times to exclude
+        $excludeQuery = "SELECT d.appointment_time FROM doctor e INNER JOIN doctor_availablity d ON e.IndexNumber = d.doc_id WHERE e.IndexNumber = :doctorId";
+        $excludeStmt = $conn->prepare($excludeQuery);
+        $excludeStmt->bindParam(':doctorId', $doctorId);
+        $excludeStmt->execute();
+
+        // Fetch the appointment times to exclude
+        $excludeTimes = [];
+        while ($row = $excludeStmt->fetch(PDO::FETCH_ASSOC)) {
+            $excludeTimes[] = $row['appointment_time'];
+        }
+
+        // Generate appointment options in 1-hour intervals, excluding the appointment times to exclude
+        $startTimeObj = new DateTime($startTime);
+        $endTimeObj = new DateTime($endTime);
+        $interval = new DateInterval('PT1H'); // 1 hour interval
+        $appointmentTime = clone $startTimeObj;
+        while ($appointmentTime < $endTimeObj) {
+            $appointmentTimeString = $appointmentTime->format('H:i:s');
+            if (!in_array($appointmentTimeString, $excludeTimes)) {
+                echo '<option value="' . $appointmentTimeString . '">' . $appointmentTimeString . '</option>';
             }
-            ?>
-        </select>
+            $appointmentTime->add($interval);
+        }
+    } catch(PDOException $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+    ?>
+</select>
+
+
+
         <input type="submit" value="Book Appointment">
     </form>
 

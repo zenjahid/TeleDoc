@@ -63,7 +63,7 @@ session_start();
 </head>
 <body>
     <!-- Navbar -->
-    <?php include 'navbar.php'; ?>
+    <?php require('navbar.php') ?>
 
     <div class="container">
         <h2>Register</h2>
@@ -209,15 +209,15 @@ session_start();
             // Function to check email availability
             function checkEmailAvailability(email) {
                 // Send an AJAX request to check email availability
-                return fetch('check_email.php?email=' + encodeURIComponent(email))
-                        .then(response => response.json())
-                        .then(data => {
-                            return data.available;
-                        })
-                        .catch(error => {
-                            console.error('Error checking email availability:', error);
-                            return false;
-                        });
+                //return fetch('check_email.php?email=' + encodeURIComponent(email))
+                        // .then(response => response.json())
+                        // .then(data => {
+                        //     return data.available;
+                        // })
+                        // .catch(error => {
+                        //     console.error('Error checking email availability:', error);
+                        //     return false;
+                        // });
             }
 
             // Function to update register button state
