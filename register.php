@@ -205,7 +205,7 @@ session_start();
 
                 return "";
             }
-
+// TODO #2 debug check email availability @PrashantaSarker
             // Function to check email availability
             function checkEmailAvailability(email) {
                 // Send an AJAX request to check email availability
