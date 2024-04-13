@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 02, 2024 at 01:12 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: 127.0.0.1:3308
+-- Generation Time: Apr 13, 2024 at 07:27 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,15 +72,22 @@ INSERT INTO `doctor` (`IndexNumber`, `Name`, `Email`, `Password`, `Degree`, `Spe
 -- --------------------------------------------------------
 
 --
--- Table structure for table `doctor_availability`
+-- Table structure for table `doctor_availablity`
 --
 
-CREATE TABLE `doctor_availability` (
-  `id` int(11) NOT NULL,
-  `doctor_id` int(11) DEFAULT NULL,
-  `appointment_time` time DEFAULT NULL,
-  `appointment_date` date DEFAULT NULL
+CREATE TABLE `doctor_availablity` (
+  `app_id` int(11) NOT NULL,
+  `doc_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `appointment_time` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `doctor_availablity`
+--
+
+INSERT INTO `doctor_availablity` (`app_id`, `doc_id`, `user_id`, `appointment_time`) VALUES
+(1, 1, 3, '10:00:00');
 
 -- --------------------------------------------------------
 
@@ -89,21 +96,23 @@ CREATE TABLE `doctor_availability` (
 --
 
 CREATE TABLE `info` (
-  `id` int(8) NOT NULL,
-  `email` varchar(40) DEFAULT NULL,
-  `name` varchar(40) DEFAULT NULL,
-  `pass` varchar(40) DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `email` varchar(99) DEFAULT NULL,
+  `name` varchar(99) DEFAULT NULL,
+  `pass` varchar(99) DEFAULT NULL,
+  `user_type` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `info`
 --
 
-INSERT INTO `info` (`id`, `email`, `name`, `pass`,`user_type`) VALUES
-
-(1, 'admin', 'admin', 'admin',0),
-(3, 'prasantasarker4@gmail.com', 'Prashanta', 'Sarker_603',2),
-(4, 'niloy@gmail.com', 'niloy', 'niloy',2);
+INSERT INTO `info` (`id`, `email`, `name`, `pass`, `user_type`) VALUES
+(1, 'admin', 'admin', 'admin', 0),
+(3, 'prasantasarker4@gmail.com', 'Prashanta', 'Sarker_603', 2),
+(4, 'niloy@gmail.com', 'niloy', 'niloy', 2),
+(5, 'agelawmow@f5.si', 'admin', 'Mnbvcxz1@', 2),
+(6, 'adminx@gmail.com', 'adminx', 'Mnbvcxz1@', 2);
 
 --
 -- Indexes for dumped tables
@@ -116,11 +125,12 @@ ALTER TABLE `doctor`
   ADD PRIMARY KEY (`IndexNumber`);
 
 --
--- Indexes for table `doctor_availability`
+-- Indexes for table `doctor_availablity`
 --
-ALTER TABLE `doctor_availability`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `doctor_id` (`doctor_id`);
+ALTER TABLE `doctor_availablity`
+  ADD PRIMARY KEY (`app_id`),
+  ADD KEY `doc_id` (`doc_id`),
+  ADD KEY `fk_user_id` (`user_id`);
 
 --
 -- Indexes for table `info`
@@ -139,26 +149,27 @@ ALTER TABLE `doctor`
   MODIFY `IndexNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT for table `doctor_availability`
+-- AUTO_INCREMENT for table `doctor_availablity`
 --
-ALTER TABLE `doctor_availability`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `doctor_availablity`
+  MODIFY `app_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `info`
 --
 ALTER TABLE `info`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `doctor_availability`
+-- Constraints for table `doctor_availablity`
 --
-ALTER TABLE `doctor_availability`
-  ADD CONSTRAINT `doctor_availability_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`IndexNumber`);
+ALTER TABLE `doctor_availablity`
+  ADD CONSTRAINT `doctor_availablity_ibfk_1` FOREIGN KEY (`doc_id`) REFERENCES `doctor` (`IndexNumber`),
+  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `info` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

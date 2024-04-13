@@ -67,7 +67,7 @@ session_start();
 
     <div class="container">
         <h2>Register</h2>
-        <form action="" method="post" id="registerForm">
+        <form action="process_register.php" method="post" id="registerForm">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input required type="text" class="form-control" id="username" name="username">
@@ -265,6 +265,7 @@ session_start();
             registerForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 // Perform form submission here if needed
+                registerForm.submit();
             });
             document.getElementById('togglePasswordVisibility').addEventListener('click', function() {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
