@@ -21,8 +21,12 @@
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
                 <?php if(isset($_SESSION['username'])): ?>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-outline-danger" href="profile.php">Profile</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-outline-danger" href="logout.php">Logout (<?php echo $_SESSION['username']; ?>)</a>
                     </li>
+
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="register.php">Register</a>

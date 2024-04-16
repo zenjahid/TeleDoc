@@ -112,16 +112,6 @@ $_POST['doc_id'] = $doctorId;
         $excludeStmt->execute();
 
 
-
-        $ex = "SELECT e.VisitCharge FROM doctor e INNER JOIN doctor_availablity d ON e.IndexNumber = d.doc_id WHERE e.IndexNumber = :doctorId";
-        $chargex = $conn->prepare($ex);
-        $chargex->bindParam(':doctorId', $doctorId);
-        $chargex->execute();
-
-
-        $row = $chargex->fetch(PDO::FETCH_ASSOC);
-        $charge = $row['VisitCharge'];
-
         // Fetch the appointment times to exclude
         $excludeTimes = [];
         while ($row = $excludeStmt->fetch(PDO::FETCH_ASSOC)) {
@@ -147,7 +137,7 @@ $_POST['doc_id'] = $doctorId;
 </select>
 <br>
 <label for="charge">Cost : </label>
-<input type="text" name="charge" value="<?php echo $charge; ?>" readonly>
+<input type="text" name="charge" value="<?php echo $doctor['VisitCharge']; ?>" readonly>
 
 <input type="submit" value="Book Appointment">
 </form>

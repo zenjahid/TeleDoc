@@ -6,6 +6,6 @@ session_unset();
 session_destroy();
 
 
-header("Location: doctor_login.php");
+header("Location:index.php");
 exit;
 ?>

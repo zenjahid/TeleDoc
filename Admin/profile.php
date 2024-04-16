@@ -1,36 +1,42 @@
 <?php
-require_once('./connection.php');
+require_once('../connection.php');
 session_start();
 
 try {
     $conn = Teledoc::connect();
 
     // Fetch user details
-    $query = "SELECT * FROM info WHERE user_type = 2 AND id = :user_id";
+    $query = "SELECT * FROM doctor WHERE IndexNumber = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $_SESSION['user_id']);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Fetch appointment details
-    $query = "SELECT d.name, da.appointment_time, da.date, da.cost, da.app_id FROM doctor d INNER JOIN doctor_availablity da ON da.doc_id = d.IndexNumber WHERE da.user_id = :user_id";
+    $query = "SELECT d.appointment_time, d.date, d.cost, i.name 
+              FROM doctor_availablity d 
+              INNER JOIN info i ON i.id = d.user_id 
+              WHERE d.doc_id = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $_SESSION['user_id']);
     $stmt->execute();
+
+    // Calculate total earning
+    $totalEarning = 0;
+    while ($user_details = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $totalEarning += ($user_details['cost']*.9);
+    }
 
 } catch(PDOException $e) {
     echo 'Error: ' . $e->getMessage();
 }
 
-$query = "DELETE from doctor_availablity where app_id = :app_id;";
+$query = "DELETE FROM doctor_availablity WHERE app_id = :app_id;";
 $appstmt = $conn->prepare($query);
 $appstmt->bindParam(':app_id', $_POST['app_id']);
 $appstmt->execute();
 
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,45 +97,47 @@ $appstmt->execute();
                 <div class="card-body">
                     <div class="form-group d-flex flex-column">
                         <label for="username" class="font-weight-bold">Username:</label>
-                        <input type="text" readonly class="form-control" id="username" value="<?php echo $user['name']; ?>">
+                        <input type="text" readonly class="form-control" id="username" value="<?php echo $user['Name']; ?>">
                     </div>
                     <div class="form-group d-flex flex-column">
                         <label for="email" class="font-weight-bold">Email:</label>
-                        <input type="email" readonly class="form-control" id="email" value="<?php echo $user['email']; ?>">
+                        <input type="email" readonly class="form-control" id="email" value="<?php echo $user['Email']; ?>">
                     </div>
                     <!-- Table to display appointment details -->
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Patient Name</th>
                                     <th>Appointment Time</th>
                                     <th>Date</th>
-                                    <th>Cost</th>
-                                    <th>Action</th> <!-- New column for action buttons -->
+                                    <th>Earning</th>
+                                    <!-- <th>Action</th> New column for action buttons -->
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php while ($user_details = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                                <?php 
+                                $stmt->execute(); // Re-execute the query to fetch all rows again
+                                while ($user_details = $stmt->fetch(PDO::FETCH_ASSOC)): 
+                                ?>
                                     <tr>
                                         <td><?php echo $user_details['name']; ?></td>
                                         <td><?php echo date('j F, Y', strtotime($user_details['appointment_time'])); ?></td>
                                         <td><?php echo date('j F, Y', strtotime($user_details['date'])); ?></td>
-                                        <td><?php echo $user_details['cost']; ?></td>
-                                        <td>
-                                            <form method="post" action="profile.php">
-                                                <input type="hidden" name="app_id" value="<?php echo $user_details['app_id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete Booking</button>
-                                            </form>
-                                        </td>
+                                        <td><?php echo ($user_details['cost']*.9); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
+                                <!-- Display total earning row -->
+                                <tr>
+                                    <td colspan="3" class="text-right"><strong>Total Earning:</strong></td>
+                                    <td><?php echo $totalEarning; ?></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="logout.php" class="btn btn-danger">Logout</a>
+                    <a href="doctor_logout.php" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>
@@ -139,10 +147,10 @@ $appstmt->execute();
 <!-- Dark mode toggle button -->
 <div style="position: fixed; top: 20px; right: 20px;">
     <button id="darkModeToggle" class="btn btn-secondary">Dark Mode</button>
-    <div class="mt-2">
-        <a href="index.php" class="btn btn-primary d-block mb-2">Home</a>
-        <a href="search.php" class="btn btn-success d-block">Search</a>
-    </div>
+    <!-- <div class="mt-2"> -->
+        <!-- <a href="index.php" class="btn btn-primary d-block mb-2">Home</a>
+        <a href="search.php" class="btn btn-success d-block">Search</a> -->
+    <!-- </div> -->
 </div>
 
 <script>
