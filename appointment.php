@@ -7,14 +7,10 @@ $doctorId = $_POST['doctorId'];
 
 try {
     $conn = Teledoc::connect();
-
     $query = "SELECT * FROM doctor WHERE IndexNumber = :doctorId";
     $stmt = $conn->prepare($query);
-
     $stmt->bindParam(':doctorId', $doctorId);
-
     $stmt->execute();
-
     $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
 } catch(PDOException $e) {
@@ -27,7 +23,7 @@ try {
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="css/design.css">
     <title>Book Appointment with <?php echo $doctor['Name']; ?></title>
 </head>
 
@@ -78,11 +74,8 @@ require("background.php");
     <h2>Available Appointment Times</h2>
 
     <?php
-    //  echo $_SESSION['user_id'];
 try {
     $conn = Teledoc::connect();
-
-    // Get the doctor's start and end time
     $startEndTimeQuery = "SELECT TimeStart, TimeEnd FROM doctor WHERE IndexNumber = :doctorId";
     $startEndTimeStmt = $conn->prepare($startEndTimeQuery);
     $startEndTimeStmt->bindParam(':doctorId', $doctorId);
@@ -101,10 +94,12 @@ try {
 
     <form action="book_appointment.php" method="post">
         <input type="hidden" name="doctorId" value="<?php echo $doctorId; ?>">
-        <label>Appointment Date:</label>
-        
+        <label>Appointment Date:</label> 
         <input type="date"  name="appointmentDate" value="<?php echo date("Y-m-d") ?>" required>
-        
+<?php
+$_POST['doc_id'] = $doctorId;
+?>
+
 <!-- v2 -->
 <label>Appointment Time:</label>
 <select name="appointmentTime" required>
@@ -115,6 +110,17 @@ try {
         $excludeStmt = $conn->prepare($excludeQuery);
         $excludeStmt->bindParam(':doctorId', $doctorId);
         $excludeStmt->execute();
+
+
+
+        $ex = "SELECT e.VisitCharge FROM doctor e INNER JOIN doctor_availablity d ON e.IndexNumber = d.doc_id WHERE e.IndexNumber = :doctorId";
+        $chargex = $conn->prepare($ex);
+        $chargex->bindParam(':doctorId', $doctorId);
+        $chargex->execute();
+
+
+        $row = $chargex->fetch(PDO::FETCH_ASSOC);
+        $charge = $row['VisitCharge'];
 
         // Fetch the appointment times to exclude
         $excludeTimes = [];
@@ -139,11 +145,12 @@ try {
     }
     ?>
 </select>
+<br>
+<label for="charge">Cost : </label>
+<input type="text" name="charge" value="<?php echo $charge; ?>" readonly>
 
-
-
-        <input type="submit" value="Book Appointment">
-    </form>
+<input type="submit" value="Book Appointment">
+</form>
 
 </body>
 
