@@ -1,4 +1,3 @@
-<!-- navbar.php -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +15,7 @@
                     <a class="nav-link" href="#">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contract</a>
+                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
