@@ -1,0 +1,19 @@
+/* Custom CSS for hover effect */
+.navbar-nav li a:hover {
+  color: #fff !important;
+  background-color: #0d6efd !important;
+}
+/* Additional styling for index.php */
+.jumbotron {
+  background-color: #f8f9fa;
+  padding: 80px 20px;
+  margin-top: 30px;
+  border-radius: 15px;
+}
+.jumbotron h1 {
+  font-weight: bold;
+  color: #0d6efd;
+}
+.jumbotron p {
+  color: #495057;
+}
