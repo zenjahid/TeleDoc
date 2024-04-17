@@ -1,36 +1,33 @@
 <?php
-                session_start();
-                require_once('../connection.php');
+session_start();
+require('../connection.php');
 
-                $error_message = '';
+if(isset($_POST['login'])){
+    $_SESSION['validate'] = false;
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-                if(isset($_POST['login'])){
-                    $_SESSION['validate'] = false;
-                    $username = $_POST['email'];
-                    $password = $_POST['password'];
-
-                    $p = teledoc::connect()->prepare('SELECT * FROM doctor WHERE email=:u');
-                    $p->bindValue(':u', $username);
-                    $p->execute();
-                    $user = $p->fetch(PDO::FETCH_ASSOC);
-                    
-                    if ($user) {
-                        $storedPassword = $user['Password'];
-                        
-                        if ($password === $storedPassword) {
-                            $_SESSION['username'] = $username;
-                            $_SESSION['user_id']=$user['IndexNumber'];
-                            $_SESSION['validate'] = true;
-                            echo '<script>alert("You have been logged in!");</script>';
-                            header('location:profile.php');
-                            exit;
-                        } else {  
-                            $error_message = "Password mismatch!";
-                        }
-                    } else {
-                        $error_message = "User not found!";
-                    }
-                }
+    $p = teledoc::connect()->prepare('SELECT * FROM info WHERE name=:u AND user_type=0');
+    $p->bindValue(':u', $username);
+    $p->execute();
+    $user = $p->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user) {
+        $storedPassword = $user['pass'];
+        
+        if ($password === $storedPassword) {
+            $_SESSION['username'] = $username;
+            $_SESSION['user_id']=$user['id'];
+            $_SESSION['validate'] = true;
+            header('location:profile.php');
+            exit;
+        } else {  
+            $error_message = "Password mismatch!";
+        }
+    } else {
+        $error_message = "User not found!";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,15 +86,15 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0">Doctor Login | TeleDoc</h3>
+                <h3 class="mb-0">Admin Login | TeleDoc</h3>
             </div>
             <div class="card-body">
                 <!-- Your PHP code for the form goes here -->
                 
                 <form method="post">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input required type="text" class="form-control" id="email" name="email">
+                        <label for="username" class="form-label">Username</label>
+                        <input required type="text" class="form-control" id="username" name="username">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
