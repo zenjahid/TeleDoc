@@ -102,7 +102,7 @@ if(isset($_POST['login'])){
                     </div>
                     <button type="submit" class="btn btn-primary w-100" value="login_button" name="login">Login</button>
                 </form>
-                <p class="text-center mt-3">Don't have an account? Contact Admin</p>
+                <p class="text-center mt-3"></p>
             </div>
         </div>
     </div>

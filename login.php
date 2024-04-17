@@ -2,6 +2,8 @@
 session_start();
 require('connection.php');
 
+// todo after registering the registered user will be needed to autologin @PrashantaSarker 
+
 if(isset($_POST['login'])){
     $_SESSION['validate'] = false;
     $username = $_POST['username'];
@@ -19,7 +21,8 @@ if(isset($_POST['login'])){
             $_SESSION['username'] = $username;
             $_SESSION['user_id']=$user['id'];
             $_SESSION['validate'] = true;
-            echo '<script>alert("You have been logged in!"); window.location.href = "index.php";</script>';
+            echo '<script>alert("You have been logged in!");</script>';
+            header('Location: index.php');
             exit;
         } else {  
             $error_message = "Password mismatch!";

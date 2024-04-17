@@ -30,7 +30,7 @@ try {
 
     // INSERT INTO `doctor` (`IndexNumber`, ``, , `Password`, , ``, ``, ``, `TimeStart`, `TimeEnd`, `VisitCharge`) VALUES
 
-    $query = "INSERT INTO info
+    $query = "INSERT INTO doctor
     (Name, Email, Degree, Speciality, Division, ChamberNumber, Hospital, ChamberLocation, TimeStart, TimeEnd, password,VisitCharge)
     VALUES
     (:name, :email, :degree, :speciality, :division, :chamber_number, :hospital, :chamber_location, :time_start, :time_end, :password,:visitcharge)";
@@ -54,7 +54,8 @@ try {
     // Execute the query
     try {
         $stmt->execute();
-        echo "New Doctor Added inserted successfully!";
+            echo '<script>alert("New Doctor Added inserted successfully!"); </script>';
+
     } catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -154,7 +155,7 @@ require('header.php');
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="doctor_logout.php" class="btn btn-danger">Logout</a>
+                    <a href="admin_logout.php" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>

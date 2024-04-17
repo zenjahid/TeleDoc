@@ -11,12 +11,12 @@ try {
     $stmt->bindParam(':user_id', $_SESSION['user_id']);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+// print_r($user);
     // Fetch appointment details
     $query = "SELECT d.name, da.appointment_time, da.date, da.cost, da.app_id FROM doctor d INNER JOIN doctor_availablity da ON da.doc_id = d.IndexNumber WHERE da.user_id = :user_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $_SESSION['user_id']);
-    $stmt->execute();
+    $ccstmt = $conn->prepare($query);
+    $ccstmt->bindParam(':user_id', $_SESSION['user_id']);
+    $ccstmt->execute();
 
 } catch(PDOException $e) {
     echo 'Error: ' . $e->getMessage();
@@ -110,7 +110,7 @@ $appstmt->execute();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php while ($user_details = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                                <?php while ($user_details = $ccstmt->fetch(PDO::FETCH_ASSOC)): ?>
                                     <tr>
                                         <td><?php echo $user_details['name']; ?></td>
                                         <td><?php echo date('j F, Y', strtotime($user_details['appointment_time'])); ?></td>

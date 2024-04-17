@@ -101,7 +101,7 @@ require('header.php');
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="doctor_logout.php" class="btn btn-danger">Logout</a>
+                    <a href="admin_logout.php" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>
