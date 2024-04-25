@@ -12,40 +12,8 @@ session_start();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom CSS -->
-    <style>
-        /* Navbar */
-        .navbar {
-            background-color: #3f51b5 !important; /* Change navbar background color */
-        }
-
-        .navbar-brand {
-            color: #ffffff !important; /* Change navbar brand text color */
-        }
-
-        .navbar-nav .nav-link {
-            color: #ffffff !important; /* Change navbar links text color */
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffeb3b !important; /* Change navbar links text color on hover */
-        }
-
-        /* Main Content */
-        .main-content {
-            background-color: #f5f5f5; /* Change main content background color */
-            padding: 30px;
-            border-radius: 10px;
-        }
-
-        /* Text */
-        h1, h2, h3, h4, h5, h6 {
-            color: #3f51b5; /* Change heading text color */
-        }
-
-        p {
-            color: #333; /* Change paragraph text color */
-        }
-    </style>
+    <link rel="stylesheet" href="css/about.css">
+    
 </head>
 
 <body>

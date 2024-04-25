@@ -59,8 +59,7 @@ session_start();
             <div class="col-md-6 offset-md-3">
                 <h1>Contact TeleDoc</h1>
                 <p>If you have any questions or need assistance, feel free to contact us using the information below:</p>
-                <p>Email: info@teledoc.com</p>
-                <p>Phone: +1 (123) 456-7890</p>
+                <p>Email: info@teledoc.rf.gd</p>
             </div>
         </div>
     </div>
