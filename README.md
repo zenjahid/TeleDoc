@@ -22,34 +22,43 @@ Teledoc is a web-based application designed to facilitate the scheduling of appo
 ## Screenshots
 
 ### Home Page
+
 ![Home Page](screenshots/home.png)
 
 ### Doctor Search
+
 ![Doctor Search](screenshots/search.png)
 
 ### Appointment Booking
+
 ![Appointment Booking](screenshots/appointment.png)
 
 ### Admin Panel
+
 ![Admin Panel](screenshots/admin.png)
 
 ## Setup Instructions (Using XAMPP)
 
 1. **Download and Install XAMPP**
+
    - Download XAMPP from the [official website](https://www.apachefriends.org/index.html) and follow the installation instructions.
 
 2. **Start Apache and MySQL Servers**
+
    - Open the XAMPP Control Panel and start the Apache and MySQL servers.
 
 3. **Clone the Repository**
    ```bash
-   git clone https://github.com/zenjahid/teledoc.git
-   
+   git clone https://github.com/zenjahid/TeleDoc.git
+
+   ```
 4. **Move the Project Files**
+
    - Move the cloned project directory to the `htdocs` directory inside the XAMPP installation directory.
 
 5. **Import Database**
-   - Open phpMyAdmin, create a new database named `doctor_appointment_system`, and import the SQL file (`doctor_appointment_system.sql`) provided in the project's `database` directory.
+
+   - Open phpMyAdmin, create a new database named `teledoc`, and import the SQL file (`teledoc.sql`) provided in the project's `database` directory.
 
 6. **Configure Database Connection**
-   - Navigate to the `config` directory within the project and open the `database.php` file to update the database connection details as per your XAMPP configuration.
+   - Open the `connection.php` file to update the database connection details as per your XAMPP configuration.
