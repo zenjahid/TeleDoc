@@ -50,7 +50,6 @@ Teledoc is a web-based application designed to facilitate the scheduling of appo
 3. **Clone the Repository**
    ```bash
    git clone https://github.com/zenjahid/TeleDoc.git
-
    ```
 4. **Move the Project Files**
 
