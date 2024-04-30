@@ -21,21 +21,63 @@ Teledoc is a web-based application designed to facilitate the scheduling of appo
 
 ## Screenshots
 
-### Home Page
+### User
 
-![Home Page](screenshots/home.png)
+#### Home Page
 
-### Doctor Search
+![Home Page](screenshots/index.png)
+
+#### Login
+
+![Login](screenshots/login.png)
+
+#### Register
+
+![Register](screenshots/register.png)
+
+#### Doctor Search
 
 ![Doctor Search](screenshots/search.png)
 
-### Appointment Booking
+#### Appointment Booking
 
 ![Appointment Booking](screenshots/appointment.png)
 
-### Admin Panel
+#### User Profile
 
-![Admin Panel](screenshots/admin.png)
+![Appointment Booking](screenshots/profile.png)
+
+#### Contact
+
+![Contact](screenshots/contact.png)
+
+#### About
+
+![About](screenshots/about.png)
+
+### Doctor Panel
+
+#### Login
+
+![Login](screenshots/doctor_login.png)
+
+#### Profile
+
+![Profile](screenshots/doctor_profile.png)
+
+### Admin
+
+#### Login
+
+![Login](screenshots/admin_login.png)
+
+#### Add Doctor
+
+![Add Doctor](screenshots/admin_add_doctor.png)
+
+#### Manage Doctor
+
+![Manage Doctor](screenshots/admin_manage_doctor.png)
 
 ## Setup Instructions (Using XAMPP)
 
