@@ -65,7 +65,7 @@ Teledoc is a web-based application designed to facilitate the scheduling of appo
 
 ![Profile](screenshots/doctor_profile.png)
 
-### Admin
+### Admin Panel
 
 #### Login
 
